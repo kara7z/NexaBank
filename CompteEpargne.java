@@ -1,0 +1,3 @@
+class CompteEpargne extends Compte {
+
+}
