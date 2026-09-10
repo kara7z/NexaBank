@@ -12,4 +12,16 @@ abstract class Personne {
     this.email = email;
     this.password = password;
   }
+
+  public int getId() {
+    return id;
+  }
+
+  String getEmail() {
+    return email;
+  }
+
+  String getPassword() {
+    return password;
+  }
 }
