@@ -26,4 +26,12 @@ public abstract class Personne {
   public String getPassword() {
     return password;
   }
+
+  public String getFirstName() {
+    return first_name;
+  }
+
+  public String getLastName() {
+    return last_name;
+  }
 }
