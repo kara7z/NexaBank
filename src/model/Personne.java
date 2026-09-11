@@ -1,11 +1,13 @@
-abstract class Personne {
+package model;
+
+public abstract class Personne {
   protected int id;
   protected String first_name;
   protected String last_name;
   protected String email;
   protected String password;
 
-  Personne(int id, String first_name, String last_name, String email, String password) {
+  public Personne(int id, String first_name, String last_name, String email, String password) {
     this.id = id;
     this.first_name = first_name;
     this.last_name = last_name;
@@ -17,11 +19,11 @@ abstract class Personne {
     return id;
   }
 
-  String getEmail() {
+  public String getEmail() {
     return email;
   }
 
-  String getPassword() {
+  public String getPassword() {
     return password;
   }
 }

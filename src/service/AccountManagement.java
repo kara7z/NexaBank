@@ -1,13 +1,16 @@
+package service;
+
 import java.util.ArrayList;
+import model.Compte;
 
-class AccountManagement {
-  static ArrayList<Compte> accounts = new ArrayList<>();
+public class AccountManagement {
+  public static ArrayList<Compte> accounts = new ArrayList<>();
 
-  static void addAccount(Compte account) {
+  public static void addAccount(Compte account) {
     accounts.add(account);
   }
 
-  static void showAccounts() {
+  public static void showAccounts() {
     for (Compte compte : accounts) {
       System.out.println("Id: " + compte.getId() + ", Solde: " + compte.getSolde() + " MAD");
     }
@@ -31,7 +34,7 @@ class AccountManagement {
     return -1;
   }
 
-  static void deposit(int id, double amount) {
+  public static void deposit(int id, double amount) {
     int accountIndex = findAccount(id);
 
     if (amount > 0 && accountIndex != -1) {
@@ -41,7 +44,7 @@ class AccountManagement {
     }
   }
 
-  static void withdraw(int id, double amount) {
+  public static void withdraw(int id, double amount) {
     int accountIndex = findAccount(id);
 
     if (amount > accounts.get(accountIndex).getSolde() && accountIndex != -1) {
@@ -51,7 +54,7 @@ class AccountManagement {
     }
   }
 
-  static void transfer(int senderId, int accountNum, double amount) {
+  public static void transfer(int senderId, int accountNum, double amount) {
     int senderIndex = findAccount(senderId);
     int recieverIndex = findAccountNum(accountNum);
 

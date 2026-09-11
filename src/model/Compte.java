@@ -1,43 +1,46 @@
+package model;
+
 import java.util.HashSet;
 
-abstract class Compte {
+public abstract class Compte {
   private int id;
   private int clientId;
   private int numeroCompte;
   private double solde;
   private HashSet<Transaction> historiqueTransactions;
 
-  Compte(int id, int clientId, int numeroCompte, double solde) {
+  public Compte(int id, int clientId, int numeroCompte, double solde) {
     this.id = id;
     this.clientId = clientId;
     this.numeroCompte = numeroCompte;
     this.solde = solde;
   };
 
-  int getId() {
+  public int getId() {
     return id;
   }
 
-  int getNumeroCompte() {
+  public int getNumeroCompte() {
     return numeroCompte;
   }
 
   public double getSolde() {
     return solde;
   }
-  int getClientId(){
+
+  public int getClientId() {
     return clientId;
   }
 
-  void withdraw(double amount) {
+  public void withdraw(double amount) {
     solde -= amount;
   }
 
-  void deposit(double amount) {
+  public void deposit(double amount) {
     solde += amount;
   }
 
-  void transfer(double amount) {
+  public void transfer(double amount) {
     solde += amount;
   }
 
