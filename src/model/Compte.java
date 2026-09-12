@@ -33,10 +33,20 @@ public abstract class Compte {
   }
 
   public void withdraw(double amount) {
+    if (amount <= 0) {
+      throw new IllegalArgumentException("Amount must be > 0.");
+    }
+    if (amount > solde) {
+      throw new IllegalStateException(
+          "Insufficient funds: solde=" + solde + ", amount=" + amount);
+    }
     solde -= amount;
   }
 
   public void deposit(double amount) {
+    if (amount <= 0) {
+      throw new IllegalArgumentException("Amount must be > 0.");
+    }
     solde += amount;
   }
 

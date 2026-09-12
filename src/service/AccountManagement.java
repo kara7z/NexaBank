@@ -1,69 +1,122 @@
 package service;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
+import model.Client;
 import model.Compte;
+import model.Personne;
 
 public class AccountManagement {
-  public static ArrayList<Compte> accounts = new ArrayList<>();
 
   public static void addAccount(Compte account) {
-    accounts.add(account);
-  }
-
-  public static void showAccounts() {
-    for (Compte compte : accounts) {
-      System.out.println("Id: " + compte.getId() + ", Solde: " + compte.getSolde() + " MAD");
+    if (account == null) {
+      throw new IllegalArgumentException("Account cannot be null.");
     }
-  }
-
-  static int findAccountNum(int accountNum) {
-    for (int i = 0; i < accounts.size(); i++) {
-      if (accounts.get(i).getNumeroCompte() == accountNum) {
-        return i;
+    Personne owner = UserManagement.findUser(account.getClientId());
+    if (!(owner instanceof Client client)) {
+      throw new IllegalStateException(
+          "Client not found for clientId=" + account.getClientId());
+    }
+    for (Compte existing : client.accounts) {
+      if (existing.getId() == account.getId()
+          || existing.getNumeroCompte() == account.getNumeroCompte()) {
+        throw new IllegalArgumentException(
+            "Account already exists (id=" + account.getId() + ").");
       }
     }
-    return -1;
+    client.accounts.add(account);
   }
 
-  static int findAccount(int id) {
-    for (int i = 0; i < accounts.size(); i++) {
-      if (accounts.get(i).getId() == id) {
-        return i;
+  public static void showAccounts(Client client) {
+    if (client == null) {
+      throw new IllegalArgumentException("Client cannot be null.");
+    }
+    if (client.accounts.isEmpty()) {
+      throw new IllegalStateException("No accounts found.");
+    }
+    for (Compte compte : client.accounts) {
+      System.out.println(
+          "Id: " + compte.getId()
+              + ", N°: " + compte.getNumeroCompte()
+              + ", Solde: " + compte.getSolde() + " MAD");
+    }
+  }
+
+  public static Compte findAccount(Client client, int id) {
+    if (client == null) {
+      throw new IllegalArgumentException("Client cannot be null.");
+    }
+    for (Compte c : client.accounts) {
+      if (c.getId() == id) {
+        return c;
       }
     }
-    return -1;
+    return null;
   }
 
-  public static void deposit(int id, double amount) {
-    int accountIndex = findAccount(id);
-
-    if (amount > 0 && accountIndex != -1) {
-      accounts.get(accountIndex).deposit(amount);
-    } else {
-      System.out.println("Error");
+  public static Compte findAccountByNumero(int numeroCompte) {
+    for (Personne p : UserManagement.users) {
+      if (p instanceof Client client) {
+        for (Compte c : client.accounts) {
+          if (c.getNumeroCompte() == numeroCompte) {
+            return c;
+          }
+        }
+      }
     }
+    return null;
   }
 
-  public static void withdraw(int id, double amount) {
-    int accountIndex = findAccount(id);
-
-    if (amount > accounts.get(accountIndex).getSolde() && accountIndex != -1) {
-      accounts.get(accountIndex).withdraw(amount);
-    } else {
-      System.out.println("Error");
+  public static ArrayList<Compte> getClientAccounts(Client client) {
+    if (client == null) {
+      throw new IllegalArgumentException("Client cannot be null.");
     }
+    return client.accounts;
   }
 
-  public static void transfer(int senderId, int accountNum, double amount) {
-    int senderIndex = findAccount(senderId);
-    int recieverIndex = findAccountNum(accountNum);
-
-    if (amount > accounts.get(senderIndex).getSolde() && senderIndex != -1) {
-      accounts.get(senderIndex).withdraw(amount);
-      accounts.get(recieverIndex).transfer(amount);
-    } else {
-      System.out.println("Error");
+  public static void deposit(Client client, int accountId, double amount) {
+    if (client == null) {
+      throw new IllegalArgumentException("Client cannot be null.");
     }
+    Compte c = findAccount(client, accountId);
+    if (c == null) {
+      throw new NoSuchElementException("Account not found: id=" + accountId);
+    }
+    c.deposit(amount);
+  }
+
+  public static void withdraw(Client client, int accountId, double amount) {
+    if (client == null) {
+      throw new IllegalArgumentException("Client cannot be null.");
+    }
+    Compte c = findAccount(client, accountId);
+    if (c == null) {
+      throw new NoSuchElementException("Account not found: id=" + accountId);
+    }
+    c.withdraw(amount);
+  }
+
+  public static void transfer(Client sender, int senderAccountId, int receiverNumero, double amount) {
+    if (sender == null) {
+      throw new IllegalArgumentException("Sender cannot be null.");
+    }
+    Compte s = findAccount(sender, senderAccountId);
+    if (s == null) {
+      throw new NoSuchElementException("Sender account not found: id=" + senderAccountId);
+    }
+    Compte r = findAccountByNumero(receiverNumero);
+    if (r == null) {
+      throw new NoSuchElementException("Receiver account not found: N°=" + receiverNumero);
+    }
+    if (amount <= 0) {
+      throw new IllegalArgumentException("Amount must be > 0.");
+    }
+    if (amount > s.getSolde()) {
+      throw new IllegalStateException(
+          "Insufficient funds: solde=" + s.getSolde() + ", amount=" + amount);
+    }
+    s.withdraw(amount);
+    r.deposit(amount);
   }
 
 }

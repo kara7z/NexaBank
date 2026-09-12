@@ -10,8 +10,12 @@ public class Client extends Personne {
     super(id, first_name, last_name, email, password);
   }
 
-  public void deposit(int amount) {
-    AccountManagement.deposit(id, amount);
+  public void deposit(int accountId, double amount) {
+    AccountManagement.deposit(this, accountId, amount);
+  }
+
+  public void withdraw(int accountId, double amount) {
+    AccountManagement.withdraw(this, accountId, amount);
   }
 
 }

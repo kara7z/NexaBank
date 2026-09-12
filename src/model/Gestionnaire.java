@@ -9,5 +9,6 @@ public class Gestionnaire extends Personne {
 
   public void addAccount(Compte account) {
     AccountManagement.addAccount(account);
+    System.out.println("Account N°" + account.getNumeroCompte() + " added.");
   }
 }
