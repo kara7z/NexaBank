@@ -37,6 +37,32 @@ public class UserManagement {
     return null;
   }
 
+  public static Client findClient(int clientId) {
+    for (Personne user : users) {
+      if (user instanceof Client client) {
+        if (client.getId() == clientId) {
+          return client;
+        }
+      }
+    }
+    return null;
+  }
+
+  public static void updateClientInfo(Client client, String firstName, String lastName, String email) {
+    if (client == null) {
+      throw new IllegalArgumentException("Client cannot be null.");
+    }
+    if (firstName != null && !firstName.isEmpty()) {
+      client.setFirstName(firstName);
+    }
+    if (lastName != null && !lastName.isEmpty()) {
+      client.setLastName(lastName);
+    }
+    if (email != null && !email.isEmpty()) {
+      client.setEmail(email);
+    }
+  }
+
   public static boolean isClient() {
     return (currentUser instanceof Client);
   }

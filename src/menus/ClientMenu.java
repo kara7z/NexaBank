@@ -23,7 +23,6 @@ public class ClientMenu {
       return false;
     }
 
-    // Single account -> auto-select, multi -> selection menu
     Compte selected = null;
     if (client.accounts.size() == 1) {
       selected = client.accounts.get(0);
@@ -32,7 +31,6 @@ public class ClientMenu {
 
     Help.clearScreen();
     while (true) {
-      // --- Account selection level ---
       while (selected == null) {
         Help.clearScreen();
         showAccountSelection(client);
@@ -57,7 +55,6 @@ public class ClientMenu {
         }
       }
 
-      // --- Operations level on selected account ---
       if (UserManagement.currentUser == null) {
         System.out.println("Session expired, back to login.");
         return false;
@@ -101,7 +98,6 @@ public class ClientMenu {
             return false;
           }
           case 6 -> {
-            // Change account (only meaningful when more than one)
             if (client.accounts.size() <= 1) {
               System.out.println("xx invalide choice xx");
               Help.pause(scanner);

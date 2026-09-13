@@ -27,6 +27,48 @@ public class AccountManagement {
     client.accounts.add(account);
   }
 
+  public static void removeAccount(Client client, int accountId) {
+    if (client == null) {
+      throw new IllegalArgumentException("Client cannot be null.");
+    }
+    for (int i = 0; i < client.accounts.size(); i++) {
+      Compte c = client.accounts.get(i);
+      if (c.getId() == accountId) {
+        client.accounts.remove(i);
+        return;
+      }
+    }
+    throw new IllegalArgumentException("Account not found: id=" + accountId);
+  }
+
+  public static int getNextAccountId() {
+    int maxId = 110;
+    for (Personne p : UserManagement.users) {
+      if (p instanceof Client client) {
+        for (Compte c : client.accounts) {
+          if (c.getId() > maxId) {
+            maxId = c.getId();
+          }
+        }
+      }
+    }
+    return maxId + 1;
+  }
+
+  public static int getNextNumeroCompte() {
+    int maxNumero = 1010;
+    for (Personne p : UserManagement.users) {
+      if (p instanceof Client client) {
+        for (Compte c : client.accounts) {
+          if (c.getNumeroCompte() > maxNumero) {
+            maxNumero = c.getNumeroCompte();
+          }
+        }
+      }
+    }
+    return maxNumero + 1;
+  }
+
   public static void showAccounts(Client client) {
     if (client == null) {
       throw new IllegalArgumentException("Client cannot be null.");

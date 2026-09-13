@@ -71,7 +71,10 @@ public class GuestMenu {
           return true;
         }
       } else {
-        System.out.println("Gestionnaire");
+        boolean exitRequested = GestionnaireMenu.Menu(scanner);
+        if (exitRequested) {
+          return true;
+        }
       }
     } else {
       System.out.println("xx invalide informations xx");
