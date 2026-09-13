@@ -69,6 +69,6 @@ public class Transaction {
     if (compteDestination != null) {
       dest = "C" + compteDestination.getNumeroCompte();
     }
-    return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + " " + type + " " + montant + " " + source + " " + dest;
+    return date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) + " " + type + " " + montant + " MAD " + source + " " + dest;
   }
 }

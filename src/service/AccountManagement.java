@@ -6,6 +6,7 @@ import model.Client;
 import model.Compte;
 import model.Personne;
 import model.Transaction;
+import utils.ReleveService;
 
 public class AccountManagement {
 
@@ -128,6 +129,7 @@ public class AccountManagement {
     c.deposit(amount);
     Transaction t = new Transaction("Dépôt", amount, null, c);
     c.addTransaction(t);
+    ReleveService.saveTransaction(c, t);
   }
 
   public static void withdraw(Client client, int accountId, double amount) {
@@ -141,6 +143,7 @@ public class AccountManagement {
     c.withdraw(amount);
     Transaction t = new Transaction("Retrait", amount, c, null);
     c.addTransaction(t);
+    ReleveService.saveTransaction(c, t);
   }
 
   public static void transfer(Client sender, int senderAccountId, int receiverNumero, double amount) {
@@ -167,6 +170,8 @@ public class AccountManagement {
     Transaction t = new Transaction("Virement", amount, s, r);
     s.addTransaction(t);
     r.addTransaction(t);
+    ReleveService.saveTransaction(s, t);
+    ReleveService.saveTransaction(r, t);
   }
 
   public static void showTransactions(Compte compte) {

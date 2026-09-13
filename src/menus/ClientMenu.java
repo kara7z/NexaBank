@@ -109,6 +109,10 @@ public class ClientMenu {
             AccountManagement.showTransactions(selected);
             Help.pause(scanner);
           }
+          case 8 -> {
+            utils.ReleveService.readReleve(selected);
+            Help.pause(scanner);
+          }
           default -> {
             System.out.println("xx invalide choice xx");
             Help.pause(scanner);
@@ -164,6 +168,7 @@ public class ClientMenu {
     System.out.println("3.Transfer");
     System.out.println("4.See Sold");
     System.out.println("7.History");
+    System.out.println("8.Releve");
     if (getAccounts().size() > 1) {
       System.out.println("6.Change account");
     }
@@ -187,6 +192,7 @@ public class ClientMenu {
     System.out.println("3.Transfer");
     System.out.println("4.See Sold");
     System.out.println("7.History");
+    System.out.println("8.Releve");
     System.out.println("5.Logout");
     System.out.println("0.exit");
     System.out.print("Choice:");
