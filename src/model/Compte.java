@@ -14,6 +14,7 @@ public abstract class Compte {
     this.clientId = clientId;
     this.numeroCompte = numeroCompte;
     this.solde = solde;
+    this.historiqueTransactions = new HashSet<>();
   };
 
   public int getId() {
@@ -32,6 +33,14 @@ public abstract class Compte {
     return clientId;
   }
 
+  public HashSet<Transaction> getHistorique() {
+    return historiqueTransactions;
+  }
+
+  public void addTransaction(Transaction t) {
+    historiqueTransactions.add(t);
+  }
+
   public void withdraw(double amount) {
     if (amount <= 0) {
       throw new IllegalArgumentException("Amount must be > 0.");
@@ -47,10 +56,6 @@ public abstract class Compte {
     if (amount <= 0) {
       throw new IllegalArgumentException("Amount must be > 0.");
     }
-    solde += amount;
-  }
-
-  public void transfer(double amount) {
     solde += amount;
   }
 

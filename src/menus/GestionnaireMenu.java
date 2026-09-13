@@ -87,6 +87,31 @@ public class GestionnaireMenu {
             UserManagement.currentUser = null;
             return false;
           }
+          case 6 -> {
+            showClients();
+            int clientId = readClientId(scanner);
+            Client client = UserManagement.findClient(clientId);
+            if (client == null) {
+              System.out.println("Client not found: id=" + clientId);
+              Help.pause(scanner);
+              break;
+            }
+            showClientAccounts(client);
+            int accountId = readAccountId(scanner);
+            Compte compte = null;
+            for (Compte c : client.accounts) {
+              if (c.getId() == accountId) {
+                compte = c;
+              }
+            }
+            if (compte == null) {
+              System.out.println("Account not found: id=" + accountId);
+              Help.pause(scanner);
+              break;
+            }
+            service.AccountManagement.showTransactions(compte);
+            Help.pause(scanner);
+          }
           default -> {
             System.out.println("xx invalide choice xx");
             Help.pause(scanner);
@@ -105,6 +130,7 @@ public class GestionnaireMenu {
     System.out.println("2.Close account");
     System.out.println("3.Update client info");
     System.out.println("4.Show client accounts");
+    System.out.println("6.Show history");
     System.out.println("5.Logout");
     System.out.println("0.exit");
     System.out.print("Choice:");

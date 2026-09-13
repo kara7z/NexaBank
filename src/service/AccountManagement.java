@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 import model.Client;
 import model.Compte;
 import model.Personne;
+import model.Transaction;
 
 public class AccountManagement {
 
@@ -125,6 +126,8 @@ public class AccountManagement {
       throw new NoSuchElementException("Account not found: id=" + accountId);
     }
     c.deposit(amount);
+    Transaction t = new Transaction("Dépôt", amount, null, c);
+    c.addTransaction(t);
   }
 
   public static void withdraw(Client client, int accountId, double amount) {
@@ -136,6 +139,8 @@ public class AccountManagement {
       throw new NoSuchElementException("Account not found: id=" + accountId);
     }
     c.withdraw(amount);
+    Transaction t = new Transaction("Retrait", amount, c, null);
+    c.addTransaction(t);
   }
 
   public static void transfer(Client sender, int senderAccountId, int receiverNumero, double amount) {
@@ -159,6 +164,22 @@ public class AccountManagement {
     }
     s.withdraw(amount);
     r.deposit(amount);
+    Transaction t = new Transaction("Virement", amount, s, r);
+    s.addTransaction(t);
+    r.addTransaction(t);
+  }
+
+  public static void showTransactions(Compte compte) {
+    if (compte == null) {
+      throw new IllegalArgumentException("Account cannot be null.");
+    }
+    if (compte.getHistorique().isEmpty()) {
+      System.out.println("No transactions found.");
+      return;
+    }
+    for (Transaction t : compte.getHistorique()) {
+      System.out.println(t.toString());
+    }
   }
 
 }
