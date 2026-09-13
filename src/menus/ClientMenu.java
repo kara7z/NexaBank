@@ -39,7 +39,7 @@ public class ClientMenu {
           System.out.println("Exit...");
           return true;
         }
-        if (sel == 5) {
+        if (sel == 9) {
           System.out.println("logout..");
           UserManagement.currentUser = null;
           return false;
@@ -62,6 +62,19 @@ public class ClientMenu {
       Help.clearScreen();
       clientOptions(selected);
       int choice = Help.choiceValidation(scanner);
+      if (!selected.canTransfer()) {
+        if (choice == 7) {
+          choice = 8;
+        } else if (choice == 6) {
+          choice = 7;
+        } else if (choice == 5) {
+          choice = 6;
+        } else if (choice == 4) {
+          choice = 5;
+        } else if (choice == 3) {
+          choice = 4;
+        }
+      }
       try {
         switch (choice) {
           case 0 -> {
@@ -81,6 +94,11 @@ public class ClientMenu {
             Help.pause(scanner);
           }
           case 3 -> {
+            if (!selected.canTransfer()) {
+              System.out.println("Transfer not allowed for Epargne.");
+              Help.pause(scanner);
+              break;
+            }
             int receiverNumero = readAccountNumero(scanner);
             double amount = readAmount(scanner, "Transfer amount:");
             AccountManagement.transfer(client, selected.getId(), receiverNumero, amount);
@@ -93,25 +111,26 @@ public class ClientMenu {
             Help.pause(scanner);
           }
           case 5 -> {
-            System.out.println("logout..");
-            UserManagement.currentUser = null;
-            return false;
+            AccountManagement.showTransactions(selected);
+            Help.pause(scanner);
           }
           case 6 -> {
+            utils.ReleveService.readReleve(selected);
+            Help.pause(scanner);
+          }
+          case 7 -> {
             if (client.accounts.size() <= 1) {
-              System.out.println("xx invalide choice xx");
-              Help.pause(scanner);
+              System.out.println("logout..");
+              UserManagement.currentUser = null;
+              return false;
             } else {
               selected = null;
             }
           }
-          case 7 -> {
-            AccountManagement.showTransactions(selected);
-            Help.pause(scanner);
-          }
           case 8 -> {
-            utils.ReleveService.readReleve(selected);
-            Help.pause(scanner);
+            System.out.println("logout..");
+            UserManagement.currentUser = null;
+            return false;
           }
           default -> {
             System.out.println("xx invalide choice xx");
@@ -141,9 +160,9 @@ public class ClientMenu {
     for (int i = 0; i < client.accounts.size(); i++) {
       Compte c = client.accounts.get(i);
       System.out.println(
-          (i + 1) + ". N°" + c.getNumeroCompte() + " - Sold: " + c.getSolde() + " MAD");
+          (i + 1) + ". N°" + c.getNumeroCompte() + " [" + c.getType() + "] - Sold: " + c.getSolde() + " MAD");
     }
-    System.out.println("5.Logout");
+    System.out.println("9.Logout");
     System.out.println("0.exit");
     System.out.print("Choice:");
   }
@@ -162,17 +181,31 @@ public class ClientMenu {
     String lastName = UserManagement.currentUser.getLastName();
     char space = ' ';
     System.out.println("Welcome " + firstName + space + lastName + " in NexaBank");
-    System.out.println("[Account N°" + selected.getNumeroCompte() + " - Sold: " + selected.getSolde() + " MAD]");
+    System.out.println("[Account N°" + selected.getNumeroCompte() + " [" + selected.getType() + "] - Sold: " + selected.getSolde() + " MAD]");
     System.out.println("1.Deposit");
     System.out.println("2.Withdraw");
-    System.out.println("3.Transfer");
-    System.out.println("4.See Sold");
-    System.out.println("7.History");
-    System.out.println("8.Releve");
-    if (getAccounts().size() > 1) {
-      System.out.println("6.Change account");
+    if (selected.canTransfer()) {
+      System.out.println("3.Transfer");
+      System.out.println("4.See Sold");
+      System.out.println("5.History");
+      System.out.println("6.Releve");
+      if (getAccounts().size() > 1) {
+        System.out.println("7.Change account");
+        System.out.println("8.Logout");
+      } else {
+        System.out.println("7.Logout");
+      }
+    } else {
+      System.out.println("3.See Sold");
+      System.out.println("4.History");
+      System.out.println("5.Releve");
+      if (getAccounts().size() > 1) {
+        System.out.println("6.Change account");
+        System.out.println("7.Logout");
+      } else {
+        System.out.println("6.Logout");
+      }
     }
-    System.out.println("5.Logout");
     System.out.println("0.exit");
     System.out.print("Choice:");
   }
@@ -191,9 +224,9 @@ public class ClientMenu {
     System.out.println("2.Withdraw");
     System.out.println("3.Transfer");
     System.out.println("4.See Sold");
-    System.out.println("7.History");
-    System.out.println("8.Releve");
-    System.out.println("5.Logout");
+    System.out.println("5.History");
+    System.out.println("6.Releve");
+    System.out.println("8.Logout");
     System.out.println("0.exit");
     System.out.print("Choice:");
   }

@@ -82,6 +82,7 @@ public class AccountManagement {
       System.out.println(
           "Id: " + compte.getId()
               + ", N°: " + compte.getNumeroCompte()
+              + " [" + compte.getType() + "]"
               + ", Solde: " + compte.getSolde() + " MAD");
     }
   }
@@ -160,6 +161,9 @@ public class AccountManagement {
     }
     if (amount <= 0) {
       throw new IllegalArgumentException("Amount must be > 0.");
+    }
+    if (!s.canTransfer()) {
+      throw new IllegalStateException("Transfer not allowed for Epargne.");
     }
     if (amount > s.getSolde()) {
       throw new IllegalStateException(

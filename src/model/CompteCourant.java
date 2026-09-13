@@ -5,4 +5,7 @@ public class CompteCourant extends Compte {
     super(id, clientId, numeroCompte, solde);
   }
 
+  public String getType() {
+    return "Courant";
+  }
 }

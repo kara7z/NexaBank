@@ -41,6 +41,14 @@ public abstract class Compte {
     historiqueTransactions.add(t);
   }
 
+  public String getType() {
+    return "Compte";
+  }
+
+  public boolean canTransfer() {
+    return true;
+  }
+
   public void withdraw(double amount) {
     if (amount <= 0) {
       throw new IllegalArgumentException("Amount must be > 0.");

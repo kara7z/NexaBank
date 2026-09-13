@@ -83,11 +83,6 @@ public class GestionnaireMenu {
             Help.pause(scanner);
           }
           case 5 -> {
-            System.out.println("logout..");
-            UserManagement.currentUser = null;
-            return false;
-          }
-          case 6 -> {
             showClients();
             int clientId = readClientId(scanner);
             Client client = UserManagement.findClient(clientId);
@@ -112,7 +107,7 @@ public class GestionnaireMenu {
             service.AccountManagement.showTransactions(compte);
             Help.pause(scanner);
           }
-          case 8 -> {
+          case 6 -> {
             showClients();
             int clientId = readClientId(scanner);
             Client client = UserManagement.findClient(clientId);
@@ -137,6 +132,11 @@ public class GestionnaireMenu {
             utils.ReleveService.readReleve(compte);
             Help.pause(scanner);
           }
+          case 7 -> {
+            System.out.println("logout..");
+            UserManagement.currentUser = null;
+            return false;
+          }
           default -> {
             System.out.println("xx invalide choice xx");
             Help.pause(scanner);
@@ -155,9 +155,9 @@ public class GestionnaireMenu {
     System.out.println("2.Close account");
     System.out.println("3.Update client info");
     System.out.println("4.Show client accounts");
-    System.out.println("6.Show history");
-    System.out.println("8.Releve");
-    System.out.println("5.Logout");
+    System.out.println("5.Show history");
+    System.out.println("6.Releve");
+    System.out.println("7.Logout");
     System.out.println("0.exit");
     System.out.print("Choice:");
   }
@@ -181,6 +181,7 @@ public class GestionnaireMenu {
     for (Compte c : client.accounts) {
       System.out.println("Id: " + c.getId()
           + ", N°: " + c.getNumeroCompte()
+          + " [" + c.getType() + "]"
           + ", Solde: " + c.getSolde() + " MAD");
     }
   }
